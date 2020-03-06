@@ -6,7 +6,11 @@
 [github-ssh](https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)  
 [community](https://github.com/tockchen/community/tree/6ed43775d08ec071d7e63ba4cbadba93bfbb9dc5)   
 [IDEA配置GIT](https://blog.csdn.net/sundehui01/article/details/102567785)   
-[w3cschool](https://www.w3cschool.cn/git/)
+[w3cschool](https://www.w3cschool.cn/git/)  
+[git API](https://developer.github.com/apps/)  
+[Bootstrap](https://v4.bootcss.com/)
+
+
 ## 工具
 [git](https://git-scm.com/) 
 
