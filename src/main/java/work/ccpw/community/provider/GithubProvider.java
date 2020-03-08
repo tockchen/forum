@@ -1,8 +1,8 @@
 package work.ccpw.community.provider;
 
+
 import com.alibaba.fastjson.JSON;
 import okhttp3.*;
-
 import org.springframework.stereotype.Component;
 import work.ccpw.community.dto.AccessTokenDTO;
 import work.ccpw.community.dto.GithubUser;
