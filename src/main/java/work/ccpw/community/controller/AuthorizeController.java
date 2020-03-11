@@ -35,6 +35,9 @@ public class AuthorizeController {
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletRequest request) {
+        System.out.println(clientId);
+        System.out.println(clientSecret);
+        System.out.println(redirectUrl);
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
@@ -42,6 +45,7 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUrl);
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        System.out.println(accessToken);
         GithubUser user = githubProvider.getUser(accessToken);
         if(user != null){
             // 登录成功,写cookie 和 session
