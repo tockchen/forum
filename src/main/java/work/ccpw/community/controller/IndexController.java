@@ -26,10 +26,14 @@ public class IndexController {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
+                System.out.println(cookie.getName());
                 String token = cookie.getValue();
+                System.out.println(token);
                 User user = userMapper.findByToken(token);
+                System.out.println(user);
                 if (user != null){
                     request.getSession().setAttribute("user",user);
+                    
                 }
                     break;
             }
