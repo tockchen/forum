@@ -2,6 +2,7 @@ package work.ccpw.community.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import work.ccpw.community.model.User;
 
@@ -17,4 +18,6 @@ public interface UserMapper {
     void insert(User user);
     @Select( "SELECT * FROM user")
     User Select();
+    @Select( "select * from user where token = #{token}")
+    User findByToken(@Param("token") String token);
 }
