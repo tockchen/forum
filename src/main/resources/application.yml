@@ -12,3 +12,7 @@ spring:
     username: root
     password: root
     driver-class-name: org.h2.Driver
+# 命名_改为驼峰
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

@@ -2,7 +2,7 @@ create table question
 (
 	id int auto_increment,
 	title varchar(50),
-	description text auto_increment,
+	description text,
 	gmt_create bigint,
 	gmt_modified bigint,
 	creator int,
