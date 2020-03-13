@@ -1,11 +1,14 @@
 package work.ccpw.community.dto;
 
+
+
 /**
  * @program: community
  * @description:
  * @author: cone
  * @create: 2020-03-07 16:43
  **/
+
 public class AccessTokenDTO {
     private String client_id;
     private String client_secret;

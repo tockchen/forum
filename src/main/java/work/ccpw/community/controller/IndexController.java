@@ -24,21 +24,20 @@ public class IndexController {
     @GetMapping("/")
     public String hello(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null){
+        if (cookies == null && cookies.length == 0) {
             return "index";
         }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
-                System.out.println(cookie.getName());
                 String token = cookie.getValue();
-                System.out.println(token);
+
                 User user = userMapper.findByToken(token);
-                System.out.println(user);
-                if (user != null){
-                    request.getSession().setAttribute("user",user);
-                    
+
+                if (user != null) {
+                    request.getSession().setAttribute("user", user);
+
                 }
-                    break;
+                break;
             }
         }
         return "index";

@@ -50,3 +50,7 @@ git remote add origin git@github.com:tockchen/community.git
 git push -u origin master
 ```
 
+## flyway
+```bash
+mvn flyway:migrate
+```
