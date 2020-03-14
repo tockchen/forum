@@ -1,6 +1,8 @@
 .main{
+    border-radius: 11px;
     margin: 40px 50px;
     background-color: #ffffff;
+    height: 1500px;
 }
 .navigation{
     margin: 0 50px;
@@ -21,4 +23,21 @@ body{
     font-size: 12px;
     font-weight: normal;
     color: #999;
+}
+.profile .section{
+    padding-top:10px;
+}
+.profile .section a{
+    margin-top:15px;
+    padding-left: 30px;
+    border: none;
+}
+
+.col-lg-3 ,.col-md-12 ,.col-sm-12 , .col-xs-12{
+    padding-right: 0;
+    padding-left: 0;
+}
+.list-group {
+    padding-left: 0;
+    margin-bottom: 0;
 }

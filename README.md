@@ -15,11 +15,12 @@
 [UML](https://mp.weixin.qq.com/s/KR2HCcCoIc-gSDLZ69azYw)   
 [MySql](https://www.runoob.com/mysql/mysql-tutorial.html)  
 [Spring Boot 整合 Mybatis](http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)      
-[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)   
+[boot-devtool](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/using-spring-boot.html#using-boot-devtools)
 ## 工具
 [git](https://git-scm.com/)   
 [flyway](https://flywaydb.org/getstarted/why)
-
+[lombok](https://projectlombok.org/features/all)
 # 命令
 
 ## Mysql脚本

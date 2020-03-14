@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import work.ccpw.community.dto.QuestionDTO;
+import org.springframework.web.bind.annotation.RequestParam;
+import work.ccpw.community.dto.PaginationDTO;
 import work.ccpw.community.mapper.UserMapper;
 import work.ccpw.community.model.User;
 import work.ccpw.community.service.QuestionService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 
 /**
@@ -30,7 +30,10 @@ public class IndexController {
 
     @GetMapping("/")
     public String hello(HttpServletRequest request,
-                        Model model) {
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "2") Integer size
+    ) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
@@ -45,9 +48,9 @@ public class IndexController {
                 }
             }
         }
-        System.out.println("2");
-        List<QuestionDTO> questionList = QuestionService.list();
-        model.addAttribute("questions", questionList);
+
+        PaginationDTO pagination = QuestionService.list(page, size);
+        model.addAttribute("pagination", pagination);
 
         return "index";
     }
