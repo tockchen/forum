@@ -6,11 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import work.ccpw.community.dto.PaginationDTO;
-import work.ccpw.community.mapper.UserMapper;
-import work.ccpw.community.model.User;
 import work.ccpw.community.service.QuestionService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -22,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Controller
 public class IndexController {
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private QuestionService QuestionService;
@@ -34,21 +29,6 @@ public class IndexController {
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "2") Integer size
     ) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    User user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-
-                    }
-                    break;
-                }
-            }
-        }
-
         PaginationDTO pagination = QuestionService.list(page, size);
         model.addAttribute("pagination", pagination);
 
