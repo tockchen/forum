@@ -1,8 +1,6 @@
 package work.ccpw.community.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import work.ccpw.community.model.Question;
 
 import java.util.List;
@@ -28,4 +26,9 @@ public interface QuesstionMapper {
 
     @Select("select count(1) from question where creator = #{userId}")
     Integer countByUserId(Integer userId);
+
+    @Select("select * from question where id = #{id}")
+    Question getById(@Param("id") Integer id);
+    @Update("update question set title = #{title}, description = #{description}, gmt_modified = #{gmtModified}, tag=#{tag} where id = #{id}")
+    void update(Question question);
 }

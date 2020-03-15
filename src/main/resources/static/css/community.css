@@ -49,3 +49,36 @@ textarea.form-control {
 .left-l{
     padding-left: 30px;
 }
+.community-menu{
+    font-size: 13px;
+    color: #999999;
+}
+.community-hr{
+    width: 100%;
+    margin: 7px  0;
+    padding-right: 10px;
+}
+.community-title{
+    font-size: 20px;
+    margin: 25px 0;
+}
+.community-left-l{
+    padding: 25px 30px;
+
+}
+.community-border{
+    border-left: 1px solid #EEEEEE;
+    height: 300px;
+
+}
+.community-border-div{
+    margin: 30px 0 0 15px;
+    padding-right: 30px;
+}
+.community-border-hr{
+    width: 100%;
+    margin-top: 15px;
+}
+.community-media {
+    margin-top: 25px;
+}
