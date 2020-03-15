@@ -56,3 +56,7 @@ git push -u origin master
 ```bash
 mvn flyway:migrate
 ```
+## MyBatis Generator
+```bash
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+```

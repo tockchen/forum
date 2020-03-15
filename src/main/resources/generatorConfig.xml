@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--数据库连接-->
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/community"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+
+        <!--java实体类生成配置-->
+        <javaModelGenerator targetPackage="work.ccpw.community.model" targetProject="src\main\java">
+            <!--此属性用于选择MyBatis Generator是否将根据内省表的目录和架构为对象生成不同的Java包。-->
+            <property name="enableSubPackages" value="true" />
+            <!--去除字段空格-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">
+            <!--此属性用于选择MyBatis Generator是否将根据内省表的目录和架构为对象生成不同的Java包。-->
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!--mapper生成配置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="work.ccpw.community.mapper"  targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!--数据表的选择-->
+        <table tableName="user" domainObjectName="User"/>
+        <table tableName="question" domainObjectName="Question"/>
+
+    </context>
+</generatorConfiguration>
