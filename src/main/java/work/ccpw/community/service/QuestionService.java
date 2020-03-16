@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import work.ccpw.community.dto.PaginationDTO;
 import work.ccpw.community.dto.QuestionDTO;
+import work.ccpw.community.exception.CustomizeErrorCode;
+import work.ccpw.community.exception.CustomizeException;
 import work.ccpw.community.mapper.QuestionMapper;
 import work.ccpw.community.mapper.UserMapper;
 import work.ccpw.community.model.Question;
@@ -34,7 +36,7 @@ public class QuestionService {
 
         PaginationDTO paginationDTO = new PaginationDTO();
 //      Integer totalCount = quesstionMapper.count();
-        Integer totalCount = (int)quesstionMapper.countByExample(new QuestionExample());
+        Integer totalCount = (int) quesstionMapper.countByExample(new QuestionExample());
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -77,7 +79,7 @@ public class QuestionService {
 //        Integer totalCount = quesstionMapper.countByUserId(userId);
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int)quesstionMapper.countByExample(questionExample);
+        Integer totalCount = (int) quesstionMapper.countByExample(questionExample);
 
         Integer totalPage;
         if (totalCount % size == 0) {
@@ -118,31 +120,37 @@ public class QuestionService {
     public QuestionDTO getById(Integer id) {
 //        Question question = quesstionMapper.getById(id);
         Question question = quesstionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException("你找的问题不在了,要不要换个试试?");
+        }
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
-        User user = userMapper.selectByPrimaryKey(id);
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }
 
     public void create(Question question) {
-         if(question.getId() == null){
-             // 创建
-             question.setGmtCreate(System.currentTimeMillis());
-             question.setGmtModified(question.getGmtCreate());
+        if (question.getId() == null) {
+            // 创建
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
 //             quesstionMapper.create(question);
-             quesstionMapper.insert(question);
-         }else {
+            quesstionMapper.insert(question);
+        } else {
 //             question.setGmtModified(System.currentTimeMillis());
 //             quesstionMapper.update(question);
-             Question updateQuestion = new Question();
-             updateQuestion.setGmtModified(System.currentTimeMillis());
-             updateQuestion.setTitle(question.getTitle());
-             updateQuestion.setDescription(question.getDescription());
-             updateQuestion.setTag(question.getTag());
-             QuestionExample example = new QuestionExample();
-             example.createCriteria().andIdEqualTo(question.getId());
-             quesstionMapper.updateByExampleSelective(updateQuestion, example);
-         }
+            Question updateQuestion = new Question();
+            updateQuestion.setGmtModified(System.currentTimeMillis());
+            updateQuestion.setTitle(question.getTitle());
+            updateQuestion.setDescription(question.getDescription());
+            updateQuestion.setTag(question.getTag());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdEqualTo(question.getId());
+            int updated = quesstionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
+            }
+        }
     }
 }

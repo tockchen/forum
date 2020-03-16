@@ -1,7 +1,8 @@
 ## 小陈社区
 
 ## 资料
-[spring](https://spring.io/guides/)    
+[spring](https://spring.io/guides/)  
+[spring boot](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/spring-boot-features.html#boot-features)  
 [Thymeleaf](https://spring.io/guides/gs/serving-web-content/)  
 [github-ssh](https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)  
 [community](https://github.com/tockchen/community/tree/6ed43775d08ec071d7e63ba4cbadba93bfbb9dc5)   
@@ -21,7 +22,8 @@
 ## 工具
 [git](https://git-scm.com/)   
 [flyway](https://flywaydb.org/getstarted/why)
-[lombok](https://projectlombok.org/features/all)
+[lombok](https://projectlombok.org/features/all) 
+[mybatis generator自动生成器](http://mybatis.org/generator/reference/plugins.html)
 # 命令
 
 ## Mysql脚本
