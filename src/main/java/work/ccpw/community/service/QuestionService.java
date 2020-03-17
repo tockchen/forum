@@ -8,6 +8,7 @@ import work.ccpw.community.dto.PaginationDTO;
 import work.ccpw.community.dto.QuestionDTO;
 import work.ccpw.community.exception.CustomizeErrorCode;
 import work.ccpw.community.exception.CustomizeException;
+import work.ccpw.community.mapper.QuestionExtMapper;
 import work.ccpw.community.mapper.QuestionMapper;
 import work.ccpw.community.mapper.UserMapper;
 import work.ccpw.community.model.Question;
@@ -27,7 +28,8 @@ import java.util.List;
 public class QuestionService {
     @Autowired
     private QuestionMapper quesstionMapper;
-
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     @Autowired
     private UserMapper userMapper;
 
@@ -55,7 +57,7 @@ public class QuestionService {
 //        List<Question> questions = quesstionMapper.list(offset, size);
 
         List<Question> questions = quesstionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
-
+        System.out.println(questions);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
 
@@ -74,7 +76,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 //        Integer totalCount = quesstionMapper.countByUserId(userId);
         QuestionExample questionExample = new QuestionExample();
@@ -117,11 +119,12 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
 //        Question question = quesstionMapper.getById(id);
         Question question = quesstionMapper.selectByPrimaryKey(id);
+
         if (question == null) {
-            throw new CustomizeException("你找的问题不在了,要不要换个试试?");
+            throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
@@ -136,7 +139,7 @@ public class QuestionService {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
 //             quesstionMapper.create(question);
-            quesstionMapper.insert(question);
+            quesstionMapper.insertSelective(question);
         } else {
 //             question.setGmtModified(System.currentTimeMillis());
 //             quesstionMapper.update(question);
@@ -148,9 +151,16 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
             int updated = quesstionMapper.updateByExampleSelective(updateQuestion, example);
-            if (updated != 1){
+            if (updated != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Long id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

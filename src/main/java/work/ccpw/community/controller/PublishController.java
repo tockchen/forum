@@ -30,7 +30,7 @@ public class PublishController {
      * @return
      */
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model){
 
         QuestionDTO question = questionService.getById(id);
@@ -52,7 +52,7 @@ public class PublishController {
             @RequestParam(value = "title",required = false) String title,
             @RequestParam(value = "description",required = false) String description,
             @RequestParam(value = "tag",required = false) String tag,
-            @RequestParam(value = "id",required = false) Integer id,
+            @RequestParam(value = "id",required = false) Long id,
             HttpServletRequest request,
             Model model
     ) {
@@ -60,15 +60,15 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
 
-        if (title == null || title == "") {
+        if (title == null || "".equals(title)) {
             model.addAttribute("error", "标题不能为空");
             return "publish";
         }
-        if (description == null || description == "") {
+        if (description == null || "".equals(description)) {
             model.addAttribute("error", "问题补充不能为空");
             return "publish";
         }
-        if (tag == null || tag == "") {
+        if (tag == null || "".equals(tag)) {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
@@ -80,13 +80,9 @@ public class PublishController {
         }
         Question question = new Question();
         question.setTitle(title);
-        System.out.println(title);
         question.setDescription(description);
-        System.out.println(description);
         question.setTag(tag);
-        System.out.println(tag);
         question.setCreator(user.getId());
-
         question.setId(id);
         questionService.create(question);
 //        quesstionMapper.create(question);
