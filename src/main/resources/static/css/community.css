@@ -85,3 +85,12 @@ textarea.form-control {
 .community-media {
     margin-top: 25px;
 }
+.community-comment{
+    margin: 10px 0;
+}
+.media-heading{
+    margin-top: 10px;
+}
+.question-tx{
+    margin-top: 15px;
+}

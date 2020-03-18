@@ -10,7 +10,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     /**
      *
      */
-    QUESTON_NOT_FOUND(2001,"你更新的问题不在了,要不要换个试试?"),
+    QUESTON_NOT_FOUND(2001,"你找的问题不在了,要不要换个试试?"),
     TARGET_NOT_FOUND(2002,"未选中任何问题或评论进行回复"),
     NO_lOGIN(2003,"当前操作需要登陆,请登陆后重试"),
     SYS_ERROR(2004,"服务冒烟了,要不然你稍后再试试!!!"),
@@ -19,6 +19,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
 
     ;
 
+    private String message;
+    private Integer code;
     @Override
     public String getMessage() {
         return message;
@@ -31,10 +33,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
 
 
 
-    private String message;
-    private Integer code;
 
     CustomizeErrorCode(Integer code, String message) {
+        this.code = code;
         this.message = message;
     }
 

@@ -15,7 +15,7 @@ public class QuestionDTO {
     private String tag;
     private Long gmtCreate;
     private Long gmtModified;
-    private Integer creator;
+    private Long creator;
     private Integer viewCount;
     private Integer commentCount;
     private Integer likeCount;
@@ -69,11 +69,11 @@ public class QuestionDTO {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getCreator() {
+    public long getCreator() {
         return creator;
     }
 
-    public void setCreator(Integer creator) {
+    public void setCreator(Long creator) {
         this.creator = creator;
     }
 

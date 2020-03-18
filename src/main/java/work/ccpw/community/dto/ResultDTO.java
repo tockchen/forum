@@ -23,6 +23,7 @@ public class ResultDTO {
     }
 
     public static ResultDTO errorOf(CustomizeErrorCode errorCode) {
+
         return errorOf(errorCode.getCode(), errorCode.getMessage());
     }
     public static ResultDTO errorOf(CustomizeException ex) {

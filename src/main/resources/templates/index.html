@@ -10,7 +10,13 @@
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/bootstrap.min.js" type="application/javascript"></script>
     </head>
-
+<script type="application/javascript">
+    var closable = window.localStorage.getItem("closable")
+    if (closable == "true"){
+        window.close();
+        window.localStorage.removeItem("closable");
+    }
+</script>
     <body>
         <div th:insert="navigation :: nav"></div>
 
@@ -26,7 +32,7 @@
 
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-circle " th:src="@{question.user.avatarUrl}">
+                                <img class="media-object img-circle " th:src="${question.user.avatarUrl}">
                             </a>
                         </div>
                         <div class="media-body">
