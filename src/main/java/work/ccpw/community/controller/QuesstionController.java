@@ -5,8 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import work.ccpw.community.dto.CommentDTO;
 import work.ccpw.community.dto.QuestionDTO;
+import work.ccpw.community.service.CommentServise;
 import work.ccpw.community.service.QuestionService;
+
+import java.util.List;
 
 /**
  * @program: community
@@ -20,14 +24,24 @@ public class QuesstionController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private CommentServise commentServise;
+
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Long id,
                            Model model){
 
         QuestionDTO questionDTO = questionService.getById(id);
 
+        List<CommentDTO> comments = commentServise.listByQuestionId(id);
+        // 累加阅读数
         questionService.incView(id);
         model.addAttribute("question",questionDTO);
+        model.addAttribute("comments",comments);
+        System.out.println(questionDTO);
+        System.out.println(comments);
         return "question";
     }
+
+
 }

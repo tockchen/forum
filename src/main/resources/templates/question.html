@@ -18,8 +18,9 @@
 
         <div class="container-fluid main profile">
             <div class="row">
-                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 community-left-l">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 community-right-line">
+                    <!--正文-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l" >
                         <h2><span th:text="${question.title}"></span></h2>
 
                         <span class="text-desc">
@@ -40,10 +41,45 @@
                         </a>
 
 
+                    </div>
+                    <h3 class="community-left-l-l">
+                        <span th:text="${question.commentCount}"></span>个回复
+                    </h3>
+                    <!-- 回复 -->
+                    <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-Reply" th:each="comment : ${comments}">
+
+
+                        <div class="media community-media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object img-rounded " th:src="${comment.user.avatarUrl}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading">
+                                    <span th:text="${comment.user.name}"></span>
+                                </h5>
+                                <div th:text="${comment.content}"></div>
+                                <div class="community-menu-icon">
+                                    <span class="glyphicon glyphicon-thumbs-up community-icon"></span>
+                                    <span class="glyphicon glyphicon-comment community-icon"></span>
+                                    <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
 
                     </div>
-                    <hr class="community-hr">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 question-tx" id="comment_section">
+
+
+                    <!--  回复输入框  -->
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l question-tx" id="comment_section">
                         <div class="media community-media">
                             <div class="media-left">
                                 <a href="#">
@@ -80,7 +116,7 @@
                         <hr class="community-border-hr">
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-border-div">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <h4>相关问题</h4>
 
                     </div>

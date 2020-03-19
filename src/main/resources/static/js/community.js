@@ -1,7 +1,10 @@
 function post() {
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
-
+    if(!content){
+        alert("请输入回复内容");
+        return
+    }
     console.log(questionId);
     console.log(content);
     $.ajax({
@@ -16,7 +19,8 @@ function post() {
         success: function (response) {
 
             if (response.code == 200) {
-                $("#comment_section").hide()
+                window.location.reload()
+
             } else {
                 if (response.code == 2003) {
                     var isAccpted = confirm(response.message);
