@@ -3,18 +3,18 @@ package work.ccpw.community.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import work.ccpw.community.dto.CommentCreateDTO;
+import work.ccpw.community.dto.CommentDTO;
 import work.ccpw.community.dto.ResultDTO;
+import work.ccpw.community.enums.CommentTypeEnum;
 import work.ccpw.community.exception.CustomizeErrorCode;
 import work.ccpw.community.model.Comment;
 import work.ccpw.community.model.User;
 import work.ccpw.community.service.CommentServise;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @program: community
@@ -37,7 +37,6 @@ public class CommentController {
         User user = (User)request.getSession().getAttribute("user");
         if (user == null){
             return ResultDTO.errorOf(CustomizeErrorCode.NO_lOGIN);
-
         }
         if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())){
             return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
@@ -49,8 +48,21 @@ public class CommentController {
         comment.setGmtModified(System.currentTimeMillis());
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setCommentator(user.getId());
+
         commentServise.insert(comment);
         return ResultDTO.okOf();
 
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id")Long id){
+
+
+        List<CommentDTO> commentDTOS = commentServise.listByTargetId(id, CommentTypeEnum.COMMENT);
+
+        return ResultDTO.okOf(commentDTOS);
+    }
+
 }

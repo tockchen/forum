@@ -57,14 +57,14 @@ public class QuestionService {
 //        List<Question> questions = quesstionMapper.list(offset, size);
 
         List<Question> questions = quesstionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
-        System.out.println(questions);
+
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
 
         for (Question question : questions) {
 //            User user = userMapper.findById(question.getCreator());
             User user = userMapper.selectByPrimaryKey(question.getCreator());
-            System.out.println(user);
+
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
@@ -107,7 +107,7 @@ public class QuestionService {
 
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
-            System.out.println(user);
+
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);

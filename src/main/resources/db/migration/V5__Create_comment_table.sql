@@ -8,6 +8,7 @@ create table comment
 	gmt_modified bigint not null,
 	like_count bigint default 0,
 	content varchar(1024),
+	comment_count int default  0,
 	constraint comment_pk
 		primary key (id)
 );
@@ -17,3 +18,4 @@ comment on column comment.commentator is '评论人id';
 comment on column comment.gmt_create is '创建时间';
 comment on column comment.like_count is '点赞数';
 comment on column COMMENT.content is '评论内容';
+comment on column COMMENT.comment_count is '回复数';

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import work.ccpw.community.dto.CommentDTO;
 import work.ccpw.community.dto.QuestionDTO;
+import work.ccpw.community.enums.CommentTypeEnum;
 import work.ccpw.community.service.CommentServise;
 import work.ccpw.community.service.QuestionService;
 
@@ -33,13 +34,11 @@ public class QuesstionController {
 
         QuestionDTO questionDTO = questionService.getById(id);
 
-        List<CommentDTO> comments = commentServise.listByQuestionId(id);
+        List<CommentDTO> comments = commentServise.listByTargetId(id, CommentTypeEnum.QUESTION);
         // 累加阅读数
         questionService.incView(id);
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
-        System.out.println(questionDTO);
-        System.out.println(comments);
         return "question";
     }
 

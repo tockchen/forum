@@ -126,10 +126,39 @@ textarea.form-control {
     margin-top: 5px;
 }
 .community-icon{
-    margin-right: 6px;
+
+    float:left;
+    margin-right: 10px;
     font-size: 15px;
     cursor: pointer;
 }
+.community-icon-text{
+    float:right;
+    line-height: 10px;
+    margin-left: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.community-media-left{
+    margin-top: 8px;
+}
 .community-icon:hover{
+    color: #499ef3;
+}
+.community-Secondary-review{
+    padding: 0 30px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+
+    margin: 0 auto 15px auto;
+}
+.community-left-review{
+    padding: 0 15px;
+    border-bottom: 1px solid #eee;
+}
+.community-btn{
+    margin: 10px 0;
+}
+.community-comment-btn{
     color: #499ef3;
 }

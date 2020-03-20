@@ -8,10 +8,7 @@ import work.ccpw.community.dto.CommentDTO;
 import work.ccpw.community.enums.CommentTypeEnum;
 import work.ccpw.community.exception.CustomizeErrorCode;
 import work.ccpw.community.exception.CustomizeException;
-import work.ccpw.community.mapper.CommentMapper;
-import work.ccpw.community.mapper.QuestionExtMapper;
-import work.ccpw.community.mapper.QuestionMapper;
-import work.ccpw.community.mapper.UserMapper;
+import work.ccpw.community.mapper.*;
 import work.ccpw.community.model.*;
 
 import java.util.ArrayList;
@@ -40,6 +37,9 @@ public class CommentServise {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
@@ -47,8 +47,6 @@ public class CommentServise {
             throw new CustomizeException(CustomizeErrorCode.TARGET_NOT_FOUND);
         }
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
-
-
             throw new CustomizeException(CustomizeErrorCode.TYPE_ERROR_WRONG);
         }
         if (comment.getType().equals(CommentTypeEnum.COMMENT.getType())) {
@@ -58,7 +56,14 @@ public class CommentServise {
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+
             commentMapper.insertSelective(comment);
+             //增加评论数
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
+
         } else {
 
             // 回复问题
@@ -73,11 +78,11 @@ public class CommentServise {
         }
     }
 
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(type.getType());
         // 按时间排序
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
@@ -95,11 +100,11 @@ public class CommentServise {
         List<User> users = userMapper.selectByExample(userExample);
 
         Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
-        System.out.println(userMap.values());
+
         // 转换 comment 为 commentDTO
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
-            BeanUtils.copyProperties(comment,commentDTO);
+            BeanUtils.copyProperties(comment, commentDTO);
 
             commentDTO.setUser(userMap.get(comment.getCommentator()));
 

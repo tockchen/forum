@@ -10,6 +10,7 @@
         <script src="/js/jquery-3.4.1.js"></script>
         <script src="/js/bootstrap.min.js" type="application/javascript"></script>
         <script src="/js/community.js" type="application/javascript"></script>
+        <script src="/js/moment.js" type="application/javascript"></script>
     </head>
 
     <body>
@@ -20,7 +21,7 @@
             <div class="row">
                 <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 community-right-line">
                     <!--正文-->
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l" >
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l">
                         <h2><span th:text="${question.title}"></span></h2>
 
                         <span class="text-desc">
@@ -47,39 +48,65 @@
                     </h3>
                     <!-- 回复 -->
                     <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-Reply" th:each="comment : ${comments}">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-Reply"
+                         th:each="comment : ${comments}">
 
 
                         <div class="media community-media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object img-rounded " th:src="${comment.user.avatarUrl}">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h5 class="media-heading">
-                                    <span th:text="${comment.user.name}"></span>
-                                </h5>
-                                <div th:text="${comment.content}"></div>
-                                <div class="community-menu-icon">
-                                    <span class="glyphicon glyphicon-thumbs-up community-icon"></span>
-                                    <span class="glyphicon glyphicon-comment community-icon"></span>
-                                    <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                            <div>
+                                <div class="media-left">
+                                    <a href="#" >
+                                        <img class="media-object img-rounded  community-media-left" th:src="${comment.user.avatarUrl}">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="media-heading">
+                                        <span th:text="${comment.user.name}"></span>
+                                    </h5>
+                                    <div th:text="${comment.content}"></div>
+                                    <div class="community-menu-icon">
+                                        <div class="glyphicon glyphicon-thumbs-up community-icon"></div>
+
+                                        <div class="glyphicon glyphicon-comment community-icon "
+                                             onclick="collapseComments(this)" data-toggle="collapse"
+                                             th:data-target="${'#comment-'+comment.id} " th:id="${comment.id}">
+                                            <div class="community-icon-text" th:text="${comment.commentCount}">
+                                            </div>
+                                        </div>
+
+
+                                        <span class="pull-right"
+                                              th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+
+                                    </div>
+
+
+                                    <div class="collapse community-Secondary-review col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                         th:id="${'comment-'+comment.id}">
+
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" placeholder="评论一下..."
+                                                   th:id="${'input-'+comment.id}">
+                                            <button type="button" class="btn btn-success pull-right community-btn"
+                                                    onclick="comment(this)" th:data-id="${comment.id}">评论
+                                            </button>
+                                        </div>
+
+                                    </div>
+
 
                                 </div>
 
                             </div>
-
                         </div>
-
-
-
                     </div>
 
 
                     <!--  回复输入框  -->
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l question-tx" id="comment_section">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 community-left-l question-tx"
+                         id="comment_section">
                         <div class="media community-media">
                             <div class="media-left">
                                 <a href="#">
