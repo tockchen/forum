@@ -7,7 +7,7 @@
 .navigation{
     margin: 0 200px;
 }
-.nav{
+.navb{
     background-color: #499ef3;
 }
 .navbar-default .navbar-nav>li>a {
@@ -95,8 +95,9 @@ textarea.form-control {
 
 }
 .community-border-div{
-    margin: 30px 0 0 15px;
+    margin: 15px 0 0 15px;
     padding-right: 30px;
+    border-bottom: 1px solid #EEEEEE;
 }
 .community-border-hr{
     width: 100%;
@@ -161,4 +162,17 @@ textarea.form-control {
 }
 .community-comment-btn{
     color: #499ef3;
+}
+.community-tags{
+    margin-right: 5px;
+}
+.publish-tab-tab{
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.publish-tab-tab .label-info{
+    margin: 5px 5px;
+    display: inline-block;
+    white-space: normal;
 }

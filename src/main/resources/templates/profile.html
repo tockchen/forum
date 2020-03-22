@@ -20,14 +20,15 @@
 
                 <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 community-right-line ">
                     <h2 class="left-l"><span th:text="${sectionName}"></span></h2>
-                    <hr >
+                    <hr>
 
                     <div class="media left-l" th:each="question : ${pagination.question}">
 
 
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-circle community-media-left" th:src="${question.user.avatarUrl}">
+                                <img class="media-object img-circle community-media-left"
+                                     th:src="${question.user.avatarUrl}">
                             </a>
                         </div>
                         <div class="media-body">
@@ -36,13 +37,19 @@
                             </h4>
                             <span class="text-desc"><span th:text="${question.commentCount}"></span> 个回复 · <span
                                     th:text="${question.viewCount}"></span> 次浏览 · <span
-                                    th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> </span>
+                                    th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> ·
+                             <a th:href="@{'/publish/'+${question.id}}" class="community-menu"
+                                th:if="${session.user !=null && session.user.id == question.creator}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            编辑
+                        </a>
+                            </span>
                         </div>
                         <hr class="community-hr">
                     </div>
 
 
-                    <nav aria-label="Page navigation" >
+                    <nav aria-label="Page navigation">
                         <ul class="pagination navbar-right left-l">
                             <li th:if="${pagination.showFirstPage}">
                                 <a href="/?page=1" aria-label="Previous">
