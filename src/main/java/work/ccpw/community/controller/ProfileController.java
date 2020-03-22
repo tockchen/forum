@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import work.ccpw.community.dto.PaginationDTO;
 import work.ccpw.community.model.User;
+import work.ccpw.community.service.NotificationService;
 import work.ccpw.community.service.QuestionService;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -24,11 +26,14 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model, HttpServletRequest request,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                          @RequestParam(name = "size", defaultValue = "3") Integer size
+                          @RequestParam(name = "size", defaultValue = "5") Integer size
     ) {
         User user = (User) request.getSession().getAttribute("user");
 
@@ -38,12 +43,18 @@ public class ProfileController {
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
+            PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         } else if ("replies".equals(action)) {
+            PaginationDTO paginationDTO = notificationService.list(user.getId(),page,size);
+
+
             model.addAttribute("section", "replies");
+            model.addAttribute("pagination", paginationDTO);
+
+
             model.addAttribute("sectionName", "最新回复");
         }
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
         return "/profile";
     }
 }

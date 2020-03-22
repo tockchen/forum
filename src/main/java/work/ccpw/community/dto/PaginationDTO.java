@@ -12,8 +12,8 @@ import java.util.List;
  * @create: 2020-03-13 23:41
  **/
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> question;
+public class PaginationDTO<T> {
+    private List<T> data;
     /**
      * 页码
      */
