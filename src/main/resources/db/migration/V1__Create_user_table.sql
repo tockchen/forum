@@ -6,7 +6,7 @@ create table USER
 	TOKEN CHAR(36),
 	GMT_CREATE BIGINT,
 	GMT_MODIFIED BIGINT,
-	bio varchar(256) not null,
+	bio varchar(256),
 	avatar_url VARCHAR(100),
 	constraint USER_PK
 	primary key (ID)

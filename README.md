@@ -17,8 +17,9 @@
 [MySql](https://www.runoob.com/mysql/mysql-tutorial.html)  
 [Spring Boot 整合 Mybatis](http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)      
 [Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)   
-[boot-devtool](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/using-spring-boot.html#using-boot-devtools)
-[Spring MVC](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/web.html#mvc-config-interceptors)
+[boot-devtool](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/using-spring-boot.html#using-boot-devtools)  
+[Spring MVC](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/web.html#mvc-config-interceptors)   
+[富文本插件](http://editor.md.ipandao.com/)
 ## 工具
 [git](https://git-scm.com/)   
 [flyway](https://flywaydb.org/getstarted/why)

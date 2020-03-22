@@ -176,3 +176,11 @@ textarea.form-control {
     display: inline-block;
     white-space: normal;
 }
+
+.publish-guide{
+    padding: 0 25px;
+}
+.publish-ul li{
+    margin: 20px 20px 20px 0;
+    color: #99AABF;
+}
