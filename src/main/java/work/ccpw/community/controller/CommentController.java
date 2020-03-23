@@ -11,7 +11,7 @@ import work.ccpw.community.enums.CommentTypeEnum;
 import work.ccpw.community.exception.CustomizeErrorCode;
 import work.ccpw.community.model.Comment;
 import work.ccpw.community.model.User;
-import work.ccpw.community.service.CommentServise;
+import work.ccpw.community.service.CommentService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,20 +27,21 @@ public class CommentController {
 
 
     @Autowired
-    private CommentServise commentServise;
+    private CommentService commentService;
 
     @ResponseBody
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
                        HttpServletRequest request) {
-
-        User user = (User)request.getSession().getAttribute("user");
-        if (user == null){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_lOGIN);
         }
-        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())){
+
+        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
             return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
+
         Comment comment = new Comment();
         comment.setParentId(commentCreateDTO.getParentId());
         comment.setContent(commentCreateDTO.getContent());
@@ -49,19 +50,14 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
-        commentServise.insert(comment,user);
+        commentService.insert(comment, user);
         return ResultDTO.okOf();
-
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
-    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id")Long id){
-
-
-        List<CommentDTO> commentDTOS = commentServise.listByTargetId(id, CommentTypeEnum.COMMENT);
-
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
         return ResultDTO.okOf(commentDTOS);
     }
 

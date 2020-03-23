@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionService {
     @Autowired
-    private QuestionMapper quesstionMapper;
+    private QuestionMapper questionMapper;
     @Autowired
     private QuestionExtMapper questionExtMapper;
     @Autowired
@@ -41,7 +41,7 @@ public class QuestionService {
 
         PaginationDTO paginationDTO = new PaginationDTO();
 //      Integer totalCount = quesstionMapper.count();
-        Integer totalCount = (int) quesstionMapper.countByExample(new QuestionExample());
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -61,7 +61,7 @@ public class QuestionService {
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = quesstionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -81,12 +81,24 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    /**
+     *
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
+
+
+
+
+
     public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 //        Integer totalCount = quesstionMapper.countByUserId(userId);
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int) quesstionMapper.countByExample(questionExample);
+        Integer totalCount = (int) questionMapper.countByExample(questionExample);
 
         Integer totalPage;
         if (totalCount % size == 0) {
@@ -105,8 +117,8 @@ public class QuestionService {
         Integer offset = size * (page - 1);
 //        List<Question> questions = quesstionMapper.listByUserId(userId, offset, size);
         QuestionExample example = new QuestionExample();
-        questionExample.createCriteria().andCreatorEqualTo(userId);
-        List<Question> questions = quesstionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
+        example.createCriteria().andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
 
@@ -126,8 +138,7 @@ public class QuestionService {
 
     public QuestionDTO getById(Long id) {
 //        Question question = quesstionMapper.getById(id);
-        Question question = quesstionMapper.selectByPrimaryKey(id);
-
+        Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
         }
@@ -138,24 +149,36 @@ public class QuestionService {
         return questionDTO;
     }
 
-    public void create(Question question) {
+    public void createOrUpdate(Question question) {
         if (question.getId() == null) {
             // 创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-//             quesstionMapper.create(question);
-            quesstionMapper.insertSelective(question);
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
+            questionMapper.insert(question);
         } else {
-//             question.setGmtModified(System.currentTimeMillis());
-//             quesstionMapper.update(question);
+            // 更新
+
+            Question dbQuestion = questionMapper.selectByPrimaryKey(question.getId());
+            if (dbQuestion == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
+            }
+
+            if (dbQuestion.getCreator().longValue() != question.getCreator().longValue()) {
+                throw new CustomizeException(CustomizeErrorCode.INVALID_OPERATION);
+            }
+
             Question updateQuestion = new Question();
             updateQuestion.setGmtModified(System.currentTimeMillis());
             updateQuestion.setTitle(question.getTitle());
             updateQuestion.setDescription(question.getDescription());
             updateQuestion.setTag(question.getTag());
             QuestionExample example = new QuestionExample();
-            example.createCriteria().andIdEqualTo(question.getId());
-            int updated = quesstionMapper.updateByExampleSelective(updateQuestion, example);
+            example.createCriteria()
+                    .andIdEqualTo(question.getId());
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
             if (updated != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
             }
@@ -170,7 +193,7 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
-        if (StringUtils.isBlank(queryDTO.getTag())){
+        if (StringUtils.isBlank(queryDTO.getTag())) {
             return new ArrayList<>();
         }
         String[] tags = StringUtils.split(queryDTO.getTag(), ",");
@@ -180,10 +203,10 @@ public class QuestionService {
                 .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining("|"));
-        System.out.println(regexpTag);
         Question question = new Question();
         question.setId(queryDTO.getId());
         question.setTag(regexpTag);
+
         List<Question> questions = questionExtMapper.selectRelated(question);
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();

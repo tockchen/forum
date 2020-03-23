@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
  * @create: 2020-03-21 16:22
  **/
 public class TagCache {
-    public static List<TagDTO> get(){
-        ArrayList<TagDTO> tagDTOS = new ArrayList<>();
+    public static List<TagDTO> get() {
+        List<TagDTO> tagDTOS = new ArrayList<>();
         TagDTO program = new TagDTO();
         program.setCategoryName("开发语言");
         program.setTags(Arrays.asList("javascript", "php", "css", "html", "html5", "java", "node.js", "python", "c++", "c", "golang", "objective-c", "typescript", "shell", "swift", "c#", "sass", "ruby", "bash", "less", "asp.net", "lua", "scala", "coffeescript", "actionscript", "rust", "erlang", "perl"));
@@ -26,6 +26,7 @@ public class TagCache {
         framework.setCategoryName("平台框架");
         framework.setTags(Arrays.asList("laravel", "spring", "express", "django", "flask", "yii", "ruby-on-rails", "tornado", "koa", "struts"));
         tagDTOS.add(framework);
+
 
         TagDTO server = new TagDTO();
         server.setCategoryName("服务器");
@@ -43,6 +44,7 @@ public class TagCache {
         tagDTOS.add(tool);
         return tagDTOS;
     }
+
     public static String filterInvalid(String tags) {
         String[] split = StringUtils.split(tags, ",");
         List<TagDTO> tagDTOS = get();
@@ -50,5 +52,10 @@ public class TagCache {
         List<String> tagList = tagDTOS.stream().flatMap(tag -> tag.getTags().stream()).collect(Collectors.toList());
         String invalid = Arrays.stream(split).filter(t -> StringUtils.isBlank(t) || !tagList.contains(t)).collect(Collectors.joining(","));
         return invalid;
+    }
+
+    public static void main(String[] args) {
+        int i = (5 - 1) >>> 1;
+        System.out.println(i);
     }
 }

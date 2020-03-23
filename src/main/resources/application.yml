@@ -6,6 +6,18 @@ github:
     secret: 24e2f2dd25827bb64e930564a6352b3d95ecc5a3
   redirect:
     uri: http://localhost:8886/callback
+
+# 云存储
+ucloud:
+  ufile:
+    public-key: TOKEN_2ad53164-f1b5-4a70-ae25-610622a6321f
+    private-key: 38db63ca-7581-4d4e-924c-10bfb74c8f89
+    bucket-name: work
+    region: cn-bj
+    suffix: ufileos.com
+    expires: 315360000
+
+
 spring:
   datasource:
     url: jdbc:h2:~/community

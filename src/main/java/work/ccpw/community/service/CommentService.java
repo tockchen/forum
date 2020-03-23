@@ -26,10 +26,11 @@ import java.util.stream.Collectors;
  * @create: 2020-03-17 11:09
  **/
 @Service
-public class CommentServise {
+public class CommentService {
 
     @Autowired
     private CommentMapper commentMapper;
+
     @Autowired
     private QuestionMapper questionMapper;
 
@@ -48,14 +49,12 @@ public class CommentServise {
     @Transactional
     public void insert(Comment comment, User commentator) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
-
             throw new CustomizeException(CustomizeErrorCode.TARGET_NOT_FOUND);
         }
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
             throw new CustomizeException(CustomizeErrorCode.TYPE_ERROR_WRONG);
         }
-        if (comment.getType().equals(CommentTypeEnum.COMMENT.getType())) {
-
+        if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             // 回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if (dbComment == null) {
@@ -68,42 +67,42 @@ public class CommentServise {
                 throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
             }
 
+            commentMapper.insert(comment);
 
-
-            commentMapper.insertSelective(comment);
-            //增加评论数
+            // 增加评论数
             Comment parentComment = new Comment();
             parentComment.setId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCount(parentComment);
 
             // 创建通知
-            creatNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
+            createNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
         } else {
-
             // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
-
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);
             }
-            commentMapper.insertSelective(comment);
+            comment.setCommentCount(0);
+            commentMapper.insert(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
-            // 创建通知
-            creatNotify(comment, question.getCreator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId());
 
+            // 创建通知
+            createNotify(comment, question.getCreator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId());
         }
     }
 
-    private void creatNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+    private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+        if (receiver.equals(comment.getCommentator())) {
+            return;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationType.getType());
         notification.setOuterid(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
-
         notification.setReceiver(receiver);
         notification.setNotifierName(notifierName);
         notification.setOuterTitle(outerTitle);
@@ -115,34 +114,33 @@ public class CommentServise {
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
                 .andTypeEqualTo(type.getType());
-        // 按时间排序
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
+
         if (comments.size() == 0) {
             return new ArrayList<>();
         }
         // 获取去重的评论人
         Set<Long> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
-        List<Long> userIds = new ArrayList<>();
+        List<Long> userIds = new ArrayList();
         userIds.addAll(commentators);
 
-        // 获取评论人并转换为MAP
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andIdIn(userIds);
-        List<User> users = userMapper.selectByExample(userExample);
 
+        // 获取评论人并转换为 Map
+        UserExample userExample = new UserExample();
+        userExample.createCriteria()
+                .andIdIn(userIds);
+        List<User> users = userMapper.selectByExample(userExample);
         Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+
 
         // 转换 comment 为 commentDTO
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
-
             commentDTO.setUser(userMap.get(comment.getCommentator()));
-
             return commentDTO;
         }).collect(Collectors.toList());
-
 
         return commentDTOS;
     }

@@ -10,7 +10,6 @@ import lombok.Data;
  **/
 @Data
 public class NotificationDTO {
-
     private Long id;
     private Long gmtCreate;
     private Integer status;
@@ -20,6 +19,4 @@ public class NotificationDTO {
     private Long outerid;
     private String typeName;
     private Integer type;
-
-
 }

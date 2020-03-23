@@ -7,7 +7,6 @@ package work.ccpw.community.enums;
  * @create: 2020-03-22 14:00
  **/
 public enum NotificationStatusEnum {
-
     UNREAD(0), READ(1);
     private int status;
 
