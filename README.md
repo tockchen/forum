@@ -1,5 +1,19 @@
 ## 小陈社区
-
+## 部署
+- Git
+- JDK
+- Maven
+- MySQL
+## 步骤
+- yum update
+- yum install git
+- mkdir App
+- cd App
+- git clone 
+- yum install maven
+- mvn -v
+- mvn clean compile package
+- mvn package  
 ## 资料
 [spring](https://spring.io/guides/)  
 [spring boot](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/spring-boot-features.html#boot-features)  

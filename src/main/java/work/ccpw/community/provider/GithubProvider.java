@@ -2,6 +2,7 @@ package work.ccpw.community.provider;
 
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 import work.ccpw.community.dto.AccessTokenDTO;
@@ -16,6 +17,7 @@ import java.io.IOException;
  * @create: 2020-03-07 16:41
  **/
 @Component
+@Slf4j
 public class GithubProvider {
 
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
@@ -35,7 +37,7 @@ public class GithubProvider {
 
             return token;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("getAccessToken error,{}", accessTokenDTO, e);
         }
         return null;
     }
@@ -50,7 +52,7 @@ public class GithubProvider {
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
             return githubUser;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("getUser error,{}", accessToken, e);
         }
         return null;
     }

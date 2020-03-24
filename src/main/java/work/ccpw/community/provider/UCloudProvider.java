@@ -7,6 +7,7 @@ import cn.ucloud.ufile.auth.UfileObjectLocalAuthorization;
 import cn.ucloud.ufile.bean.PutObjectResultBean;
 import cn.ucloud.ufile.exception.UfileClientException;
 import cn.ucloud.ufile.exception.UfileServerException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import work.ccpw.community.exception.CustomizeErrorCode;
@@ -22,6 +23,7 @@ import java.util.UUID;
  * @create: 2020-03-22 20:08
  **/
 @Service
+@Slf4j
 public class UCloudProvider {
 
     @Value("${ucloud.ufile.public-key}")
@@ -66,14 +68,14 @@ public class UCloudProvider {
                         .createUrl();
                 return url;
             } else {
-
+                log.error("upload error,{}", response);
                 throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
             }
         } catch (UfileClientException e) {
-
+            log.error("upload error,{}", fileName, e);
             throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
         } catch (UfileServerException e) {
-
+            log.error("upload error,{}", fileName, e);
             throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
         }
     }

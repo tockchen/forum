@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @author: cone
  * @create: 2020-03-21 16:22
  **/
+
 public class TagCache {
     public static List<TagDTO> get() {
         List<TagDTO> tagDTOS = new ArrayList<>();

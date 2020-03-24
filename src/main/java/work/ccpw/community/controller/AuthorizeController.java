@@ -1,5 +1,6 @@
 package work.ccpw.community.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.UUID;
  * @create: 2020-03-07 15:20
  **/
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -65,6 +67,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             return "redirect:/";
         } else {
+            log.error("callback get github error,{}", githubUser);
             // 登录失败，重新登录
             return "redirect:/";
         }
