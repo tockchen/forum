@@ -20,7 +20,7 @@ ucloud:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306?useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/qa?useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

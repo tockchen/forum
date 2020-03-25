@@ -20,7 +20,7 @@
   <update id="incCommentCount" parameterType="work.ccpw.community.model.Comment">
     update comment
     set
-    comment_count = comment_count + #{commentcount,jdbcType=INTEGER}
+    comment_count = comment_count + #{commentCount,jdbcType=INTEGER}
     where id = #{id}
   </update>
 </mapper>
