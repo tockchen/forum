@@ -7,4 +7,4 @@ create table nav
     gmt_create bigint,
     gmt_modified bigint,
     status int
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

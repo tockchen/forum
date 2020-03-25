@@ -1,14 +1,14 @@
-create table USER
+create table user
 (
-	ID BIGINT auto_increment not null,
-	ACCOUNT_ID VARCHAR(100),
-	NAME VARCHAR(50),
-	TOKEN CHAR(36),
-	GMT_CREATE BIGINT,
-	GMT_MODIFIED BIGINT,
+	id bigint auto_increment not null,
+	account_id varchar(100),
+	name varchar(50),
+	token char(36),
+	gmt_create bigint,
+	gmt_modified bigint,
 	bio varchar(256),
-	avatar_url VARCHAR(100),
-	constraint USER_PK
-	primary key (ID)
-);
+	avatar_url varchar(100),
+	constraint user_pk
+	primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

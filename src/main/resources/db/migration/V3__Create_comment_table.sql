@@ -1,21 +1,14 @@
 create table comment
 (
-	id bigint auto_increment,
-	parent_id bigint not null,
-	type int not null,
-	commentator bigint default 0,
-	gmt_create bigint not null,
-	gmt_modified bigint not null,
-	like_count bigint default 0,
-	content varchar(1024),
-	comment_count int default  0,
+	id bigint auto_increment ,
+	parent_id bigint not null comment '父类id',
+	type int not null comment '父类类型',
+	commentator bigint default 0 comment '评论人id',
+	gmt_create bigint not null comment '创建时间',
+	gmt_modified bigint not null comment '修改时间',
+	like_count bigint default 0 comment '点赞数',
+	content varchar(1024) comment '评论内容',
+	comment_count int default  0 comment '回复数',
 	constraint comment_pk
 		primary key (id)
-);
-comment on column comment.parent_id is '父类id';
-comment on column comment.type is '父类类型';
-comment on column comment.commentator is '评论人id';
-comment on column comment.gmt_create is '创建时间';
-comment on column comment.like_count is '点赞数';
-comment on column COMMENT.content is '评论内容';
-comment on column COMMENT.comment_count is '回复数';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

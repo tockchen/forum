@@ -20,10 +20,10 @@ ucloud:
 
 spring:
   datasource:
-    url: jdbc:h2:~/community
+    url: jdbc:mysql://localhost:3306?useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     password: root
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 # 命名_改为驼峰
 mybatis:
   configuration:
