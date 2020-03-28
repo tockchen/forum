@@ -6,7 +6,7 @@
 <generatorConfiguration>
     <context id="DB2Tables" targetRuntime="MyBatis3">
 
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
         <!--数据库连接-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/qa?serverTimezone=UTC"
@@ -27,7 +27,7 @@
 
 
         <!--java实体类生成配置-->
-        <javaModelGenerator targetPackage="work.ccpw.community.model" targetProject="src\main\java">
+        <javaModelGenerator targetPackage="work.ccpw.forum.model" targetProject="src\main\java">
             <!--此属性用于选择MyBatis Generator是否将根据内省表的目录和架构为对象生成不同的Java包。-->
             <property name="enableSubPackages" value="true" />
             <!--去除字段空格-->
@@ -39,7 +39,7 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         <!--mapper生成配置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="work.ccpw.community.mapper"  targetProject="src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="work.ccpw.forum.mapper" targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!--数据表的选择-->
@@ -47,7 +47,6 @@
         <table tableName="question" domainObjectName="Question"/>
         <table tableName="comment" domainObjectName="Comment"/>
         <table tableName="notification" domainObjectName="Notification"/>
-        <table tableName="nav" domainObjectName="Nav"/>
-        <table tableName="ad" domainObjectName="Ad"/>
+
     </context>
 </generatorConfiguration>
