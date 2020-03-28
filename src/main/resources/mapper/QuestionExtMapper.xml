@@ -19,14 +19,14 @@
     set
     view_count = view_count + #{viewCount,jdbcType=INTEGER}
     where id = #{id}
-  </update>
+    </update>
+
   <update id="incCommentCount" parameterType="work.ccpw.community.model.Question">
     update question
     set
-    comment_count = comment_count + #{commentCount,jdbcType=INTEGER}
+    COMMENT_COUNT = COMMENT_COUNT + #{commentCount,jdbcType=INTEGER}
     where id = #{id}
-  </update>
-
+    </update>
 
   <select id="selectRelated" parameterType="work.ccpw.community.model.Question" resultMap="BaseResultMap">
     select * from question
@@ -41,7 +41,6 @@
     order by gmt_create desc limit 20
   </select>
 
-
   <select id="countBySearch" parameterType="work.ccpw.community.dto.QuestionQueryDTO"
           resultType="java.lang.Integer">
     select count(*) from question
@@ -49,11 +48,17 @@
       <if test="search != null and search != ''">
         and title regexp #{search}
       </if>
+      <if test="tag != null and tag != ''">
+        and tag regexp #{tag}
+      </if>
+      <if test="sort != null and sort != '' and sort == 'no'">
+        and comment_count = 0
+      </if>
+      <if test="time != null and time != ''">
+        and gmt_create > #{time}
+      </if>
     </where>
-
-
   </select>
-
 
   <select id="selectBySearch" parameterType="work.ccpw.community.dto.QuestionQueryDTO"
           resultMap="BaseResultMap">
@@ -62,10 +67,30 @@
       <if test="search != null and search != ''">
         and title regexp #{search}
       </if>
+      <if test="tag != null and tag != ''">
+        and tag regexp #{tag}
+      </if>
+      <if test="sort != null and sort != '' and sort == 'no'">
+        and comment_count = 0
+      </if>
+      <if test="time != null and time != ''">
+        and gmt_create > #{time}
+      </if>
     </where>
-    order by comment_count desc limit #{page},#{size}
+    <if test="sort == null or sort == ''">
+      order by gmt_create desc
+    </if>
+    <if test="sort != null and sort != '' and sort == 'new'">
+      order by gmt_create desc
+    </if>
+    <if test="sort != null and sort != '' and sort == 'no'">
+      order by gmt_create desc
+    </if>
+    <if test="sort != null and sort != '' and (sort == 'hot' || sort == 'hot7' || sort == 'hot30')">
+      order by comment_count desc
+    </if>
+    limit #{page},#{size}
   </select>
-
 
 
 

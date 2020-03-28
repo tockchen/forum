@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="notice">
+    <!--时间-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 side ">
+        <h4 class="main-right">当前时间</h4>
+        <hr class="index-hr">
+        <div class="main-right">
+            <span class="number" id="Year"></span>年
+            <span class="number" id="Month"></span>月
+            <span class="number" id="Date"></span>日
+            星期<span class="number" id="week"></span><br>
+            <span class="number" id="Hours"></span> :
+            <span class="number" id="Minutes"></span> :
+            <span class="number" id="Secondes"></span><br>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

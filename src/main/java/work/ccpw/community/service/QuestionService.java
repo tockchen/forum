@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import work.ccpw.community.dto.PaginationDTO;
 import work.ccpw.community.dto.QuestionDTO;
 import work.ccpw.community.dto.QuestionQueryDTO;
+import work.ccpw.community.enums.SortEnum;
 import work.ccpw.community.exception.CustomizeErrorCode;
 import work.ccpw.community.exception.CustomizeException;
 import work.ccpw.community.mapper.QuestionExtMapper;
@@ -32,12 +33,15 @@ import java.util.stream.Collectors;
 public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
+
     @Autowired
     private QuestionExtMapper questionExtMapper;
+
     @Autowired
     private UserMapper userMapper;
 
-    public PaginationDTO list(String search,Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
+
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
             search = Arrays
@@ -49,110 +53,110 @@ public class QuestionService {
         }
 
         PaginationDTO paginationDTO = new PaginationDTO();
-//      Integer totalCount = quesstionMapper.count();
-        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
 
-        questionQueryDTO.setSearch(search);
-        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
-        System.out.println(totalCount);
         Integer totalPage;
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        if (StringUtils.isNotBlank(tag)) {
+            tag = tag.replace("+", "").replace("*", "").replace("?", "");
+            questionQueryDTO.setTag(tag);
+        }
+
+        for (SortEnum sortEnum : SortEnum.values()) {
+            if (sortEnum.name().toLowerCase().equals(sort)) {
+                questionQueryDTO.setSort(sort);
+
+                if (sortEnum == SortEnum.HOT7) {
+                    questionQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 7);
+                }
+                if (sortEnum == SortEnum.HOT30) {
+                    questionQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 30);
+                }
+                break;
+            }
+        }
+
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
             totalPage = totalCount / size + 1;
         }
+
         if (page < 1) {
             page = 1;
         }
         if (page > totalPage) {
             page = totalPage;
         }
-        paginationDTO.setPagination(totalPage, page);
-        // size*(page-1)
-        Integer offset =page < 1 ? 0 : size * (page - 1);
-//        List<Question> questions = quesstionMapper.list(offset, size);
 
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
+        paginationDTO.setPagination(totalPage, page);
+        Integer offset = page < 1 ? 0 : size * (page - 1);
         questionQueryDTO.setSize(size);
         questionQueryDTO.setPage(offset);
         List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
-        System.out.println(questions);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
-
         for (Question question : questions) {
-//            User user = userMapper.findById(question.getCreator());
             User user = userMapper.selectByPrimaryKey(question.getCreator());
-
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
+
         paginationDTO.setData(questionDTOList);
-
-
         return paginationDTO;
     }
 
-    /**
-     *
-     * @param userId
-     * @param page
-     * @param size
-     * @return
-     */
-
-
-
-
-
     public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
-//        Integer totalCount = quesstionMapper.countByUserId(userId);
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int) questionMapper.countByExample(questionExample);
 
         Integer totalPage;
+
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria()
+                .andCreatorEqualTo(userId);
+        Integer totalCount = (int) questionMapper.countByExample(questionExample);
+
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
             totalPage = totalCount / size + 1;
         }
+
         if (page < 1) {
             page = 1;
         }
         if (page > totalPage) {
             page = totalPage;
         }
+
         paginationDTO.setPagination(totalPage, page);
-        // size*(page-1)
+
+        //size*(page-1)
         Integer offset = size * (page - 1);
-//        List<Question> questions = quesstionMapper.listByUserId(userId, offset, size);
         QuestionExample example = new QuestionExample();
-        example.createCriteria().andCreatorEqualTo(userId);
+        example.createCriteria()
+                .andCreatorEqualTo(userId);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
-
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
-
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
+
         paginationDTO.setData(questionDTOList);
-
-
         return paginationDTO;
     }
 
     public QuestionDTO getById(Long id) {
-//        Question question = quesstionMapper.getById(id);
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTON_NOT_FOUND);

@@ -27,7 +27,6 @@ public class QuesstionController {
     @Autowired
     private QuestionService questionService;
 
-
     @Autowired
     private CommentService commentService;
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @program: community
- * @description:
+ * @description: 通知
  * @author: cone
  * @create: 2020-03-22 16:04
  **/

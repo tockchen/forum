@@ -106,7 +106,7 @@ public class CommentService {
         notification.setReceiver(receiver);
         notification.setNotifierName(notifierName);
         notification.setOuterTitle(outerTitle);
-        notificationMapper.insert(notification);
+        notificationMapper.insertSelective(notification);
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {

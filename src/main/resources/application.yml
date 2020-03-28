@@ -1,5 +1,8 @@
 server:
   port: 8886
+  servlet:
+    session:
+      timeout: 15552000
 github:
   client:
     id: 08937290359057a5f107
@@ -30,6 +33,10 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 # 命名_改为驼峰
 mybatis:
   configuration:
@@ -50,6 +57,5 @@ logging:
       ccpw:
         community:
           mapper: debug
-  pattern:
-    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
-    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+
+

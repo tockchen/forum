@@ -27,6 +27,7 @@ import java.util.UUID;
 @Slf4j
 public class AuthorizeController {
 
+
     @Autowired
     private GithubProvider githubProvider;
 
@@ -64,7 +65,6 @@ public class AuthorizeController {
             userService.createOrUpdate(user);
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
-            System.out.println(cookie.getName());
             response.addCookie(cookie);
             return "redirect:/";
         } else {

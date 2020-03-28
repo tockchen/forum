@@ -1,0 +1,45 @@
+.navigation{
+    margin: 0 200px;
+}
+
+
+
+
+
+
+
+.navb{
+    background-color: #499ef3;
+}
+.navbar-default .navbar-nav>li>a {
+    color: #ffffff;
+}
+.navbar-default .navbar-brand {
+    color: #ffffff;
+}
+.col-lg-3 ,.col-md-12 ,.col-sm-12 , .col-xs-12,.col-lg-9{
+    padding-right: 0;
+    padding-left: 0;
+}
+.main{
+    border-radius: 11px;
+    margin: 40px 200px 30px;
+    background-color: white;
+    padding-top: 10px;
+    border-right: 1px solid #EEEEEE;
+}
+body {
+    background-color: #efefef;
+}
+.footer {
+    color: #666;
+    padding: 0 0 10px;
+    text-align: center;
+}
+.red {
+    color: red !important;
+}
+
+
+
+

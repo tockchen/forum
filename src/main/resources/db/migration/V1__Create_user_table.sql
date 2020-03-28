@@ -2,7 +2,7 @@ create table user
 (
 	id bigint auto_increment not null,
 	account_id varchar(100),
-	name varchar(50),
+	name varchar(50) default '  ',
 	token char(36),
 	gmt_create bigint,
 	gmt_modified bigint,

@@ -1,0 +1,49 @@
+
+
+
+.publish-left{
+    border-right: 1px solid #EEEEEE;
+}
+.publish-title{
+    padding-left: 30px;
+    margin-right: 30px;
+}
+.publish-matter{
+    padding-left: 30px;
+    margin-right: 30px;
+}
+
+.publish-tag {
+    text-decoration-line: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    line-height: 16px;
+    padding: 2px 5px;
+    background-color: #99cfff;
+    font-size: 12px;
+    color: #fff !important;
+    border-radius: 4px;
+    margin: 4px;
+}
+.community-tag:hover {
+    background-color: #339dff;
+    color: #fff !important;
+    text-decoration-line: none;
+}
+.publish-btn{
+    float:right;
+    margin-bottom: 15px;
+}
+.publish-guide{
+    padding: 0 25px;
+}
+.publish-ul{
+    margin: 20px 20px 20px 0;
+    color: #99AABF;
+}
+.publish-tab-tab{
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}

@@ -7,7 +7,7 @@ create table notification
 	type int comment '区分评论或回复',
 	gmt_create bigint not null comment '创建时间',
 	status int default 0 comment '是否已读',
-	notifier_name varchar(100) not null ,
+	notifier_name varchar(100),
 	outer_title varchar(256) not null ,
 	constraint notification_pk
 		primary key (id)
